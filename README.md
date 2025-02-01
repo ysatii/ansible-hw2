@@ -34,9 +34,19 @@ vector:
 ```
 
 2. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает [vector](https://vector.dev). Конфигурация vector должна деплоиться через template файл jinja2. От вас не требуется использовать все возможности шаблонизатора, просто вставьте стандартный конфиг в template файл. Информация по шаблонам по [ссылке](https://www.dmosk.ru/instruktions.php?object=ansible-nginx-install). не забудьте сделать handler на перезапуск vector в случае изменения конфигурации!
+[ссылка на переделанный site.yml](https://github.com/ysatii/ansible-hw2/blob/main/playbook/site.yml)  
+[обработчик роли  ](https://github.com/ysatii/ansible-hw2/blob/main/playbook/roles/vector/handlers/main.yml)
+[Шаблон конфигурации роли](https://github.com/ysatii/ansible-hw2/blob/main/playbook/roles/vector/templates/vector.toml.j2)
+[настройки и выходные директории](https://github.com/ysatii/ansible-hw2/blob/main/playbook/roles/vector/tasks/main.yml)
+
 3. При создании tasks рекомендую использовать модули: `get_url`, `template`, `unarchive`, `file`.
 4. Tasks должны: скачать дистрибутив нужной версии, выполнить распаковку в выбранную директорию, установить vector.
 5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
+ ![рис 1](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble1.jpg)  
+ ![рис 1](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble2.jpg)
+ ![рис 1](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble3.jpg)
+ ![рис 1](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble4.jpg)
+
 
 
 
