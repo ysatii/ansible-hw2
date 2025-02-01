@@ -65,6 +65,10 @@ vector:
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 https://github.com/ysatii/ansible-hw2/releases/tag/08-ansible-02-playbook
 ---
+11. Используемые машины
+ ![рис 8](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble8.jpg)
+ ![рис 9](https://github.com/ysatii/ansible-hw2/blob/main/img/img_ansble9.jpg)
+
 
 ### Как оформить решение задания
 
