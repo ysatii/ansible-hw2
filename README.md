@@ -63,7 +63,7 @@ vector:
 [инструкция](https://github.com/ysatii/ansible-hw2/blob/main/playbook/README.md)
 
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
-
+https://github.com/ysatii/ansible-hw2/releases/tag/08-ansible-02-playbook
 ---
 
 ### Как оформить решение задания
