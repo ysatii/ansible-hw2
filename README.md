@@ -9,11 +9,37 @@
 
 ## Основная часть
 
-1. Подготовьте свой inventory-файл `prod.yml`.
+Задание  1.  
+  Подготовьте свой inventory-файл `prod.yml`.  
+
+Решение 1.  
+листинг prod.yml
+```
+ GNU nano 4.8                          /home/lamer/Рабочий стол/ansible-hw2/playbook/inventory/prod.yml                                    
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: 158.160.141.195
+      ansible_connection: ssh
+      ansible_user: lamer
+      ansible_ssh_private_key_file: ssh_env/id_rsa_insecure_clickhouse-01
+
+vector:
+  hosts:
+    clickhouse-02:
+      ansible_host: 158.160.164.93
+      ansible_connection: ssh
+      ansible_user: lamer
+      ansible_ssh_private_key_file: ssh_env/id_rsa_insecure_clickhouse-02
+```
+
 2. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает [vector](https://vector.dev). Конфигурация vector должна деплоиться через template файл jinja2. От вас не требуется использовать все возможности шаблонизатора, просто вставьте стандартный конфиг в template файл. Информация по шаблонам по [ссылке](https://www.dmosk.ru/instruktions.php?object=ansible-nginx-install). не забудьте сделать handler на перезапуск vector в случае изменения конфигурации!
 3. При создании tasks рекомендую использовать модули: `get_url`, `template`, `unarchive`, `file`.
 4. Tasks должны: скачать дистрибутив нужной версии, выполнить распаковку в выбранную директорию, установить vector.
 5. Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
+
+
+
 6. Попробуйте запустить playbook на этом окружении с флагом `--check`.
 7. Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
 8. Повторно запустите playbook с флагом `--diff` и убедитесь, что playbook идемпотентен.

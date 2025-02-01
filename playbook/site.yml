@@ -1,36 +1,53 @@
 ---
 - name: Install Clickhouse
   hosts: clickhouse
-  handlers:
-    - name: Start clickhouse service
-      become: true
-      ansible.builtin.service:
-        name: clickhouse-server
-        state: restarted
+  become: true
+  vars:
+    clickhouse_version: "23.8.2.7"
+    download_dir: "/home/{{ ansible_user }}/clickhouse"
+
   tasks:
-    - block:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
-            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
-          with_items: "{{ clickhouse_packages }}"
-      rescue:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
-            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
-    - name: Install clickhouse packages
-      become: true
-      ansible.builtin.yum:
+    - name: Ensure ClickHouse download directory exists
+      file:
+        path: "{{ download_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Get ClickHouse RPM packages
+      get_url:
+        url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.x86_64.rpm"
+        dest: "{{ download_dir }}/{{ item }}-{{ clickhouse_version }}.rpm"
+        mode: "0644"
+      with_items:
+        - clickhouse-client
+        - clickhouse-server
+        - clickhouse-common-static
+
+    - name: Install ClickHouse packages
+      yum:
         name:
-          - clickhouse-common-static-{{ clickhouse_version }}.rpm
-          - clickhouse-client-{{ clickhouse_version }}.rpm
-          - clickhouse-server-{{ clickhouse_version }}.rpm
-      notify: Start clickhouse service
-    - name: Flush handlers
-      meta: flush_handlers
-    - name: Create database
-      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
-      register: create_db
-      failed_when: create_db.rc != 0 and create_db.rc !=82
-      changed_when: create_db.rc == 0
+          - "{{ download_dir }}/clickhouse-client-{{ clickhouse_version }}.rpm"
+          - "{{ download_dir }}/clickhouse-server-{{ clickhouse_version }}.rpm"
+          - "{{ download_dir }}/clickhouse-common-static-{{ clickhouse_version }}.rpm"
+        state: present
+
+    - name: Start ClickHouse service
+      systemd:
+        name: clickhouse-server
+        enabled: true
+        state: started
+
+    - name: Create ClickHouse database
+      shell: "clickhouse-client -q 'CREATE DATABASE IF NOT EXISTS logs;'"
+      register: create_db_result
+      changed_when: false
+
+    - name: Show ClickHouse database creation result
+      debug:
+        var: create_db_result.stdout_lines
+
+- name: Install and configure Vector
+  hosts: vector
+  become: true
+  roles:
+    - vector
