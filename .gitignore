@@ -1,5 +1,6 @@
 # Игнорируем папку с SSH-ключами
 ssh_env/
+playbook/ssh_env/
 
 # Игнорируем временные файлы Ansible
 *.retry
